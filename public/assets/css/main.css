@@ -1,0 +1,44 @@
+body
+{
+margin: 0px;
+	padding-left: 20px;
+	background-color: #222;
+	color:#ffffff;
+	font-family: sans-serif;
+}
+ul 
+{
+	text-decoration: none;
+	list-style: none;
+
+}
+li,a{
+	text-decoration: none;
+
+	float: left;
+}
+a:hover{
+	color:#c8c8c8;
+}
+a:active{
+	color: #fffff1;
+}
+.field
+{
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+input{
+	border-width: 0px;
+	border-style: none;
+	margin-bottom: 5px;
+	width: 200px;
+	height: 23px;
+	font-size: 20px;
+	font-family: sans-serif;
+}
+p{
+	color:red;
+}
