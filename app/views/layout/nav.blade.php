@@ -3,6 +3,7 @@
 	@if(Auth::check())
 		<!--SinIn-->
 		<li><a href="{{URL::route('logout')}}">Logout&nbsp; &nbsp; </a></li>
+		<li><a href="{{URL::route('change_password')}}">Change password&nbsp; &nbsp; </a></li>
 	@else
 		<!--NotSinIn-->
 		<li><a href="{{URL::route('login')}}">Login&nbsp; &nbsp; </a></li>

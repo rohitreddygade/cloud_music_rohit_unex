@@ -1,8 +1,9 @@
 @extends("layout.main")
 @section('title')
 Home @stop
+@section('page_title')
+Login @stop
 @section('content')
-<center><h1>Login</h1></center>
 <form class="login" method="post" action="{{URL::route('login-post')}}">
 	<div class="field">
 		<input  type="text" placeholder='Email' name="email" {{(Input::old('email') ? 'value="'.e(Input::old('email')).'"' : '')}} >
@@ -16,7 +17,7 @@ Home @stop
 			{{$errors->first('password')}}
 		@endif
 	</div>
-	<div class="field">	
+	<div class="submit">	
 			<input type='submit' value="login">
 			{{Form::token()}}
 	</div>

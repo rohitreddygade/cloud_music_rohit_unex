@@ -5,13 +5,20 @@ class AccountController extends BaseController
 	//Displaying SinUp form
 	public function getCreate()
 	{
+		
+
+
+
 		return View::make('account.create');
 	}
+
+
+
 	//Getitng SinUp form Details and processing
 	public function postCreate()
-	{		
-		
-			$validator = Validator::make(Input::all(),array
+	{	//ACtivate Mail Before the testing
+
+		$validator = Validator::make(Input::all(),array
 					(
 						'email'				=>'required|email|unique:users',
 						'username'			=>'required|min:4|unique:users',
@@ -31,12 +38,12 @@ class AccountController extends BaseController
 			}
 			else
 			{
-				//All are Valid info. then
+				//All are Valid info. then()
 				 $email 		= Input::get('email');
 				 $username		= Input::get('username');
 				 $password 		=Input::get('password');
 				//Activation Code
-				 $code   = str_random(220);
+				 $code   = str_random(224);
 
 				 $user = User::create(array(
 				 		'email' => $email,
@@ -60,10 +67,13 @@ class AccountController extends BaseController
 			}
 
 	}
+
+
+
 	//Checking is give code is matchs or not(MAIl VERIFICATION).
 	public function getActivate($code)
 	{
-		$user = User::where('code','=',$code)-where('active','=',0);
+		$user = User::where('code','=',$code)->where('active','=',0);
 		if ($user->count())
 		{
 			$user = $user->first();
@@ -81,11 +91,22 @@ class AccountController extends BaseController
 					->with('global',"Somthing Went wrong.Please try again later");
 		}
 	}
+
+
+
 	//Displaying login Form
 	public function  getLogin()
 	{
+		
+
+
+
 		return View::make('account.login');
 	}
+
+
+
+
 	//Processing the Given data and Redirecting to requried route.
 	public function  postLogin()
 	{
@@ -128,20 +149,161 @@ class AccountController extends BaseController
 		return Redirect::route('/')
 				->with('global','Something Went Wrong Please try again later');
 	}
+
+
+
 	//Logout Processes.
 	public function getLogout()
 	{
+		
+
+
 		Auth::logout();
 		return Redirect::route('login');
 	}
+
+
+
+
+
 	//Forgot Password (Form)
 	public function getforgotpassword()
 	{
+		
+
+
+
 		return View::make('account.forgot');
 	}
-	//Forgot Password (post)
+
+
+
+
+	//Forgot Password (post) //Incompleate
 	public function postforgotpassword()
 	{
-		return Redirect::route('login')->with('global','Dont Fool me Rohit Reddy');
+
+
+		return 'please activate get-forgot-password.';
+			
+		/*$validator = Validator::make(Input::all('email'),array('email' => 'required|email'));
+
+			if ($validator->fails()) 
+			{
+				return Redirect::route('forgot-password')
+								->withErrors($validator)
+								->withInput();
+			}
+			else
+			{
+				//Checking and Sending new password
+
+				$user = User::where('email','=',Input::get('email'));
+
+				if ($user->count())
+				{
+					$user 				 = $user->first();
+
+					//Generation New code and  password
+
+					$code 				 = str_random(254);
+					$password 			 = str_random(10);
+					$user->code			 =$code;
+					$user->password_temp = Hash::make($password);
+					if ($user->save())
+					{
+						Mail:send('emails.auth.recovery',array( 
+							'link' 		=> URL::route('recovery-mail',$code),
+							'username'	=>$user->username,'password'=>$password),
+						function($message)use($user)
+						{
+							$message->to($user->email,$user->username)->subject('Your new Password');
+						});
+						return Redirect::route('index')
+											-with('global','We have send you a new password to your mail id please check your in your mail ');
+					}
+
+				}
+			}
+			//Backend
+			return Redirect::route('forgot-password')->with('global','Something went Wrong Please try again later');*/
 	}
+
+
+
+
+	//Geting Recovery Mail Code
+	public function getRecoveryMail($code)
+	{
+		$user = User::where('code', '=',$code)->where('password_temp','!=','');
+		if ($user->count())
+		{
+			$user = $user->first();
+			$user->password = $user->password_temp;
+			$user->password_temp ='';
+			$user->code='';
+			if ($user->save())
+			{
+			 	return Redirect::route('login')
+			 			->with('global','Please login with your new password');
+			} 
+		}
+		return Redirect::route('index')
+				->with('global','Unable to recover your account.');
+	}
+
+
+
+
+	//Changin Password
+	public function getChangepassword()
+	{
+		
+
+
+		return View::make('account.change_password');
+	}
+
+
+
+	//Change password (POST)
+	public function postChangepassword()
+	{
+		$validator = Validator::make(Input::all(),array(
+						'password'				=>'required|',
+						'new_password'			=>'required|min:6',
+						'new_password_again'	=>'required|same:new_password|min:6'
+						)
+		);
+
+			if ($validator->fails()) 
+			{
+				return Redirect::route('change_password')
+								->withErrors($validator);
+			}
+			else
+			{
+				$user = User::find(Auth::user()->id);
+
+				$old_password = Input::get('password');
+				$password     = Input::get('new_password');
+
+				if (Hash::check($old_password,$user -> getAuthPassword()))
+				{
+					$user->password  = Hash::make($password);
+					 if ($user->save())
+					 {
+					 	return Redirect::route('index')->with('global','Your password has been successfilly updated');
+					 }
+					 else{
+					 	return Redirect::route('change_password')->with('global','Something Went Wrong');
+					 }
+				}
+			}
+			return Redirect::route('change_password')
+						->with('global','Something went wrong please try again later');
+	}
+
+
+	
 }//End of the class

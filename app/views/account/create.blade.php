@@ -2,9 +2,9 @@
 
 @section('title')
 Create Account @stop
-
+@section('page_title')
+Create Account @stop
 @section('content')
-	<center><h1>Create Account</h1></center>
 	<form action="{{URL::route('account-create-post')}}" method="post">
 		<div class="sinup">
 
@@ -36,7 +36,7 @@ Create Account @stop
 				@endif
 
 			</div>
-			<div class="field">
+			<div class="submit">
 				<input type='submit' value="Create">
 				{{Form::token()}}
 			</div>

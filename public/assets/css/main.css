@@ -1,9 +1,9 @@
 body
 {
-margin: 0px;
+	margin: 0px;
 	padding-left: 20px;
-	background-color: #222;
-	color:#ffffff;
+	background-color: #e1e1e1;
+	color:#333;
 	font-family: sans-serif;
 }
 ul 
@@ -18,10 +18,12 @@ li,a{
 	float: left;
 }
 a:hover{
-	color:#c8c8c8;
+	text-decoration: none;
+	color:#000;
 }
 a:active{
-	color: #fffff1;
+	text-decoration: none;
+	color: #222;
 }
 .field
 {
@@ -30,15 +32,30 @@ a:active{
 	margin-top: 0px;
 	margin-bottom: 0px;
 }
-input{
-	border-width: 0px;
-	border-style: none;
-	margin-bottom: 5px;
+input
+{
+	border-width: 1px;
+	border-radius: 5px;
+	margin-bottom: 8px;
 	width: 200px;
 	height: 23px;
 	font-size: 20px;
 	font-family: sans-serif;
+	border-color: #e2e2e2;
+	
 }
 p{
 	color:red;
+}
+.page_title
+{
+	text-align: center;
+}
+form,.sinup,.field 
+{
+	margin: 0px auto;
+}
+.submit
+{
+
 }
